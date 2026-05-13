@@ -18,7 +18,7 @@ resource "azurerm_key_vault_access_policy" "deployer" {
 }
 
 resource "azurerm_key_vault_secret" "this" {
-  for_each     = var.secrets
+  for_each     = nonsensitive(var.secrets)
   name         = each.key
   value        = each.value
   key_vault_id = azurerm_key_vault.this.id
