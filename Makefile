@@ -19,15 +19,15 @@ validate: ## Validate configuration syntax
 
 plan: fmt validate ## Run formatting, validation, and output a deployment plan
 	@echo "Generating Terraform plan..."
-	@cd $(TF_DIR) && terraform plan -out=tfplan
+	@cd $(TF_DIR) && TF_VAR_postgresql_admin_password="$(TF_VAR_postgresql_admin_password)" terraform plan -out=tfplan
 
 apply: ## Apply the generated infrastructure plan
 	@echo "Applying Terraform configuration..."
-	@cd $(TF_DIR) && terraform apply tfplan
+	@cd $(TF_DIR) && TF_VAR_postgresql_admin_password="$(TF_VAR_postgresql_admin_password)" terraform apply tfplan
 
 destroy: ## Destroy local environment resources safely
 	@echo "Destroying infrastructure..."
-	@cd $(TF_DIR) && terraform destroy
+	@cd $(TF_DIR) && TF_VAR_postgresql_admin_password="$(TF_VAR_postgresql_admin_password)" terraform destroy
 
 evidence: ## Export ITHC security markdown evidence
 	@echo "Executing compliance evidence dump..."

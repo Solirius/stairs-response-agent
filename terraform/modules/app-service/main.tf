@@ -18,7 +18,7 @@ resource "azurerm_linux_web_app" "this" {
     application_stack {
       python_version = "3.11"
     }
-    startup_command = "uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    app_command_line = "uvicorn app.main:app --host 0.0.0.0 --port 8000"
   }
 
   app_settings = var.app_settings
