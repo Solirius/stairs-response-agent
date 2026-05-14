@@ -1,3 +1,8 @@
+output "principal_id" {
+  description = "Principal ID of the Container App's system-assigned managed identity."
+  value       = azurerm_container_app.this.identity[0].principal_id
+}
+
 output "app_url" {
   description = "Public HTTPS URL of the Container App."
   value       = "https://${azurerm_container_app.this.latest_revision_fqdn}"

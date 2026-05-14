@@ -24,22 +24,9 @@ variable "app_settings" {
   default     = {}
 }
 
-variable "database_password" {
-  description = "PostgreSQL admin password (injected as a Container App secret)."
+variable "key_vault_uri" {
+  description = "URI of the Key Vault the Container App's managed identity will read secrets from."
   type        = string
-  sensitive   = true
-}
-
-variable "openai_api_key" {
-  description = "Azure OpenAI API key (injected as a Container App secret)."
-  type        = string
-  sensitive   = true
-}
-
-variable "search_api_key" {
-  description = "Azure AI Search admin key (injected as a Container App secret)."
-  type        = string
-  sensitive   = true
 }
 
 variable "tags" {

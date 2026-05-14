@@ -43,10 +43,16 @@ module "container_app" {
     AZURE_EMBEDDING_DEPLOYMENT = module.ai_foundry.embedding_deployment_name
     SEARCH_ENDPOINT            = module.ai_search.endpoint
   }
-  database_password = var.postgresql_admin_password
-  openai_api_key    = module.ai_foundry.primary_key
-  search_api_key    = module.ai_search.primary_key
-  tags              = local.base_tags
+  key_vault_uri = module.key_vault.vault_uri
+  tags          = local.base_tags
+}
+
+resource "azurerm_key_vault_access_policy" "container_app" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.container_app.principal_id
+
+  secret_permissions = ["Get", "List"]
 }
 
 module "ai_search" {
