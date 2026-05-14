@@ -13,7 +13,7 @@ User → Container App (FastAPI) → Azure AI Foundry Agent
                                   Blob Storage (document indexing)
 ```
 
-All secrets are stored in Key Vault and injected as app settings at runtime.
+Secrets (`postgresql-password`, `openai-api-key`, `search-api-key`) are stored in Key Vault. The Container App has a system-assigned managed identity with `Get`/`List` access; only `AZURE_KEYVAULT_URI` is passed as an env var, and the app fetches secrets from Key Vault at startup.
 
 ## Provisioned resources
 
