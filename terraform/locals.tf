@@ -10,8 +10,9 @@ locals {
   rg_name          = "rg-${var.project_name}-${var.environment}-${var.location}"
   postgresql_name  = "psql-${var.project_name}-${var.environment}"
   storage_name     = substr(lower(replace("st${var.project_name}${var.environment}", "-", "")), 0, 24)
-  app_service_name = "app-${var.project_name}-${var.environment}"
+  container_app_name = "app-${var.project_name}-${var.environment}"
+  acr_name           = substr(lower("acr${var.project_name}${var.environment}"), 0, 50)
   search_name      = "srch-${var.project_name}-${var.environment}"
-  openai_name      = "oai-${var.project_name}-${var.environment}"
+  ai_foundry_name  = "aif-${var.project_name}-${var.environment}"
   key_vault_name   = substr("kv-${var.project_name}-${var.environment}", 0, 24)
 }

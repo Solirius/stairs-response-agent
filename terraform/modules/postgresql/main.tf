@@ -9,8 +9,9 @@ resource "azurerm_postgresql_flexible_server" "this" {
   storage_mb                   = 32768
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
-  zone                         = "1"
-  tags                         = var.tags
+  zone                          = "1"
+  public_network_access_enabled = true
+  tags                          = var.tags
 }
 
 resource "azurerm_postgresql_flexible_server_database" "this" {

@@ -1,5 +1,8 @@
 .PHONY: help init plan apply destroy fmt validate evidence
 
+-include .env
+export
+
 TF_DIR := terraform
 
 help: ## Show this help dialog

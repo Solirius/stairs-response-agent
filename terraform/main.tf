@@ -26,21 +26,27 @@ module "storage" {
   tags                = local.base_tags
 }
 
-module "app_service" {
-  source              = "./modules/app-service"
-  name                = local.app_service_name
+module "container_app" {
+  source              = "./modules/container-app"
+  name                = local.container_app_name
+  acr_name            = local.acr_name
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
-  sku_name            = var.app_service_sku
   app_settings = {
-    DATABASE_HOST   = module.postgresql.fqdn
-    DATABASE_NAME   = module.postgresql.database_name
-    DATABASE_USER   = var.postgresql_admin_username
-    DATABASE_PORT   = "5432"
-    OPENAI_ENDPOINT = module.openai.endpoint
-    SEARCH_ENDPOINT = module.ai_search.endpoint
+    DATABASE_HOST              = module.postgresql.fqdn
+    DATABASE_NAME              = module.postgresql.database_name
+    DATABASE_USER              = var.postgresql_admin_username
+    DATABASE_PORT              = "5432"
+    DATABASE_SSL               = "require"
+    AZURE_OPENAI_ENDPOINT      = module.ai_foundry.endpoint
+    AZURE_AI_DEPLOYMENT        = module.ai_foundry.deployment_name
+    AZURE_EMBEDDING_DEPLOYMENT = module.ai_foundry.embedding_deployment_name
+    SEARCH_ENDPOINT            = module.ai_search.endpoint
   }
-  tags = local.base_tags
+  database_password = var.postgresql_admin_password
+  openai_api_key    = module.ai_foundry.primary_key
+  search_api_key    = module.ai_search.primary_key
+  tags              = local.base_tags
 }
 
 module "ai_search" {
@@ -52,15 +58,20 @@ module "ai_search" {
   tags                = local.base_tags
 }
 
-module "openai" {
-  source              = "./modules/openai"
-  name                = local.openai_name
-  resource_group_name = module.resource_group.name
-  location            = module.resource_group.location
-  model_name          = var.openai_model
-  model_version       = var.openai_model_version
-  capacity            = var.openai_capacity
-  tags                = local.base_tags
+module "ai_foundry" {
+  source                  = "./modules/ai-foundry"
+  name                    = local.ai_foundry_name
+  resource_group_name     = module.resource_group.name
+  location                = var.openai_location
+  storage_account_id      = module.storage.id
+  key_vault_id            = module.key_vault.id
+  model_name              = var.openai_model
+  model_version           = var.openai_model_version
+  capacity                = var.openai_capacity
+  embedding_model         = var.embedding_model
+  embedding_model_version = var.embedding_model_version
+  embedding_capacity      = var.embedding_capacity
+  tags                    = local.base_tags
 }
 
 module "key_vault" {
@@ -72,7 +83,7 @@ module "key_vault" {
   object_id           = data.azurerm_client_config.current.object_id
   secrets = {
     postgresql-password = var.postgresql_admin_password
-    openai-api-key      = module.openai.primary_key
+    openai-api-key      = module.ai_foundry.primary_key
     search-api-key      = module.ai_search.primary_key
   }
   tags = local.base_tags
