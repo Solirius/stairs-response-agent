@@ -31,21 +31,13 @@ resource "azurerm_container_app" "this" {
   revision_mode                = "Single"
   tags                         = var.tags
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   secret {
     name  = "acr-password"
     value = azurerm_container_registry.this.admin_password
-  }
-  secret {
-    name  = "database-password"
-    value = var.database_password
-  }
-  secret {
-    name  = "openai-api-key"
-    value = var.openai_api_key
-  }
-  secret {
-    name  = "search-api-key"
-    value = var.search_api_key
   }
 
   registry {
@@ -70,16 +62,8 @@ resource "azurerm_container_app" "this" {
       }
 
       env {
-        name        = "DATABASE_PASSWORD"
-        secret_name = "database-password"
-      }
-      env {
-        name        = "AZURE_OPENAI_API_KEY"
-        secret_name = "openai-api-key"
-      }
-      env {
-        name        = "SEARCH_API_KEY"
-        secret_name = "search-api-key"
+        name  = "AZURE_KEYVAULT_URI"
+        value = var.key_vault_uri
       }
     }
   }
