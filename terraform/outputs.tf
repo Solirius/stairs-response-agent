@@ -3,9 +3,14 @@ output "resource_group_name" {
   value       = module.resource_group.name
 }
 
-output "app_service_url" {
-  description = "URL of the deployed FastAPI application."
-  value       = "https://${module.app_service.default_hostname}"
+output "app_url" {
+  description = "Public URL of the deployed FastAPI application (Container App)."
+  value       = module.container_app.app_url
+}
+
+output "acr_login_server" {
+  description = "Login server for the Azure Container Registry."
+  value       = module.container_app.acr_login_server
 }
 
 output "postgresql_fqdn" {
@@ -13,9 +18,19 @@ output "postgresql_fqdn" {
   value       = module.postgresql.fqdn
 }
 
-output "openai_endpoint" {
-  description = "Azure OpenAI endpoint URL."
-  value       = module.openai.endpoint
+output "foundry_endpoint" {
+  description = "Azure AI Services endpoint URL (OpenAI-compatible, accessed via Foundry)."
+  value       = module.ai_foundry.endpoint
+}
+
+output "foundry_hub_id" {
+  description = "Resource ID of the Azure AI Foundry Hub."
+  value       = module.ai_foundry.foundry_hub_id
+}
+
+output "foundry_project_id" {
+  description = "Resource ID of the Azure AI Foundry Project."
+  value       = module.ai_foundry.foundry_project_id
 }
 
 output "search_endpoint" {

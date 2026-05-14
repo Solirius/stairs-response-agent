@@ -33,12 +33,6 @@ variable "postgresql_sku" {
   default     = "B_Standard_B1ms"
 }
 
-variable "app_service_sku" {
-  description = "SKU for App Service Plan (e.g. B1, P1v2)."
-  type        = string
-  default     = "B1"
-}
-
 variable "search_sku" {
   description = "Pricing tier for Azure AI Search (free, basic, standard)."
   type        = string
@@ -46,19 +40,43 @@ variable "search_sku" {
 }
 
 variable "openai_model" {
-  description = "Azure OpenAI model to deploy (e.g. gpt-4o-mini, gpt-4o)."
+  description = "Azure OpenAI model to deploy (e.g. gpt-4o, gpt-4o-mini)."
   type        = string
-  default     = "gpt-4o-mini"
+  default     = "gpt-4o"
 }
 
 variable "openai_model_version" {
   description = "Version of the Azure OpenAI model."
   type        = string
-  default     = "2024-07-18"
+  default     = "2024-11-20"
 }
 
 variable "openai_capacity" {
   description = "TPM quota for the OpenAI deployment in thousands (Standard tier)."
+  type        = number
+  default     = 30
+}
+
+variable "openai_location" {
+  description = "Azure region for the OpenAI account. gpt-4o-mini is not available in uksouth; swedencentral and eastus have the widest model support."
+  type        = string
+  default     = "swedencentral"
+}
+
+variable "embedding_model" {
+  description = "Azure OpenAI embedding model to deploy."
+  type        = string
+  default     = "text-embedding-3-small"
+}
+
+variable "embedding_model_version" {
+  description = "Version of the embedding model (use '1' for text-embedding-3-small)."
+  type        = string
+  default     = "1"
+}
+
+variable "embedding_capacity" {
+  description = "TPM quota in thousands for the embedding deployment."
   type        = number
   default     = 30
 }

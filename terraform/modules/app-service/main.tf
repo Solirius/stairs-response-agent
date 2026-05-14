@@ -15,6 +15,7 @@ resource "azurerm_linux_web_app" "this" {
   https_only          = true
 
   site_config {
+    always_on = var.sku_name == "F1" || var.sku_name == "D1" ? false : true
     application_stack {
       python_version = "3.11"
     }
