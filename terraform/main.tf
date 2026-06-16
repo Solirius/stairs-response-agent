@@ -18,14 +18,6 @@ module "postgresql" {
   tags                = local.base_tags
 }
 
-module "storage" {
-  source              = "./modules/storage"
-  name                = local.storage_name
-  resource_group_name = module.resource_group.name
-  location            = module.resource_group.location
-  tags                = local.base_tags
-}
-
 module "container_app" {
   source              = "./modules/container-app"
   name                = local.container_app_name
@@ -69,7 +61,6 @@ module "ai_foundry" {
   name                    = local.ai_foundry_name
   resource_group_name     = module.resource_group.name
   location                = var.openai_location
-  storage_account_id      = module.storage.id
   key_vault_id            = module.key_vault.id
   model_name              = var.openai_model
   model_version           = var.openai_model_version

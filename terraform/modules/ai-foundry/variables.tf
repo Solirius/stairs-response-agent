@@ -12,11 +12,6 @@ variable "location" {
   type        = string
 }
 
-variable "storage_account_id" {
-  description = "Resource ID of the Storage Account used by the Foundry Hub."
-  type        = string
-}
-
 variable "key_vault_id" {
   description = "Resource ID of the Key Vault used by the Foundry Hub."
   type        = string

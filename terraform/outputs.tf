@@ -43,7 +43,3 @@ output "key_vault_uri" {
   value       = module.key_vault.vault_uri
 }
 
-output "storage_blob_endpoint" {
-  description = "Primary blob endpoint for the documents storage account."
-  value       = module.storage.primary_blob_endpoint
-}
