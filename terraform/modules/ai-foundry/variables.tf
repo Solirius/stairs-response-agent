@@ -12,11 +12,6 @@ variable "location" {
   type        = string
 }
 
-variable "key_vault_id" {
-  description = "Resource ID of the Key Vault used by the Foundry Hub."
-  type        = string
-}
-
 variable "model_name" {
   description = "Azure OpenAI model to deploy via AI Foundry (e.g. gpt-4o)."
   type        = string

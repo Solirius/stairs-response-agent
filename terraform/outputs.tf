@@ -37,9 +37,3 @@ output "search_endpoint" {
   description = "Azure AI Search endpoint URL."
   value       = module.ai_search.endpoint
 }
-
-output "key_vault_uri" {
-  description = "URI of the Key Vault storing application secrets."
-  value       = module.key_vault.vault_uri
-}
-

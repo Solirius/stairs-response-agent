@@ -24,11 +24,6 @@ variable "app_settings" {
   default     = {}
 }
 
-variable "key_vault_uri" {
-  description = "URI of the Key Vault the Container App's managed identity will read secrets from."
-  type        = string
-}
-
 variable "tags" {
   description = "Tags to apply to all resources."
   type        = map(string)

@@ -60,11 +60,6 @@ resource "azurerm_container_app" "this" {
           value = env.value
         }
       }
-
-      env {
-        name  = "AZURE_KEYVAULT_URI"
-        value = var.key_vault_uri
-      }
     }
   }
 
