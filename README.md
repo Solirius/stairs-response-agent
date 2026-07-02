@@ -43,6 +43,8 @@ Secrets (`postgresql-password`, `openai-api-key`, `search-api-key`) are stored i
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) installed
 - [Terraform](https://developer.hashicorp.com/terraform/install) >= 1.5.0 installed
 - Access to the target Azure subscription
+- The following Azure Resource providers must be enabled in your Azure subscription
+  - `Microsoft.Storage`
 
 ### 2. Log in to Azure
 
@@ -173,41 +175,7 @@ make destroy
 
 ## To create the remote backend
 
-```bash
-# Log in to Azure
-az login
-
-# Set variables (replace with your naming standard/region)
-RG_NAME="rg-fabric-tfstate-uksouth"
-STORAGE_NAME="stfabrictfstate$(date +%s)" # unique name
-CONTAINER_NAME="tfstate"
-LOCATION="uksouth"
-
-# Create Resource Group for State
-az group create --name $RG_NAME --location $LOCATION
-
-# Create Storage Account with versioning enabled (crucial for recovery during hackdays)
-az storage account create \
-  --name $STORAGE_NAME \
-  --resource-group $RG_NAME \
-  --location $LOCATION \
-  --sku Standard_LRS \
-  --encryption-services blob
-
-# Enable Blob Versioning for safety
-az storage account blob-service-properties update \
-  --account-name $STORAGE_NAME \
-  --resource-group $RG_NAME \
-  --enable-versioning true
-
-# Create Blob Container
-az storage container create \
-  --name $CONTAINER_NAME \
-  --account-name $STORAGE_NAME \
-  --auth-mode login
-
-echo "Save this storage account name for your backend.tf: $STORAGE_NAME"
-```
+Run `sh init_remote_backend.sh` to initialise the backend.
 
 > **Fish shell note:** Replace `VAR="value"` assignments with `set VAR "value"` and run the
 > `az` commands individually using the literal values, as Fish does not support `VAR=value` syntax.
