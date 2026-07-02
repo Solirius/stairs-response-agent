@@ -1,5 +1,6 @@
 data "azurerm_client_config" "current" {}
 
+# Generate a random unique id, to prevent resource naming conflicts with other hackathon teams
 resource "random_string" "unique_id" {
   length  = 3
   upper   = false
