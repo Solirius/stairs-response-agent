@@ -45,6 +45,7 @@ Secrets (`postgresql-password`, `openai-api-key`, `search-api-key`) are stored i
 - Access to the target Azure subscription
 - The following Azure Resource providers must be enabled in your Azure subscription
   - `Microsoft.Storage`
+  - `Microsoft.App`
 
 ### 2. Log in to Azure
 

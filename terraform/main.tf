@@ -38,9 +38,11 @@ module "container_app" {
     DATABASE_PORT              = "5432"
     DATABASE_SSL               = "require"
     AZURE_OPENAI_ENDPOINT      = module.ai_foundry.endpoint
+    AZURE_OPENAI_API_KEY       = module.ai_foundry.primary_key
     AZURE_AI_DEPLOYMENT        = module.ai_foundry.deployment_name
     AZURE_EMBEDDING_DEPLOYMENT = module.ai_foundry.embedding_deployment_name
     SEARCH_ENDPOINT            = module.ai_search.endpoint
+    SEARCH_API_KEY             = module.ai_search.primary_key
   }
   tags = local.base_tags
 }

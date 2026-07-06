@@ -70,6 +70,10 @@ resource "azurerm_container_app" "this" {
       percentage      = 100
       latest_revision = true
     }
+
+    cors {
+      allowed_origins = ["https://portal.azure.com"]
+    }
   }
 
   # Prevent Terraform from reverting the image after az acr build + az containerapp update
