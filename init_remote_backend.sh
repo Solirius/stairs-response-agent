@@ -10,6 +10,7 @@ LOCATION="uksouth"
 
 
 # Register resource providers
+az provider register --namespace 'Microsoft.App'
 az provider register --namespace 'Microsoft.Storage' --wait
 
 # Create Resource Group for State

@@ -4,7 +4,7 @@
 terraform {
   backend "azurerm" {
     resource_group_name  = "rg-hackathon-tfstate-uksouth"
-    storage_account_name = "stfstate1783001409"
+    storage_account_name = "stfstate1783006194"
     container_name       = "tfstate"
     key                  = "compliance-discovery.tfstate"
   }

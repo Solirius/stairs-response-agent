@@ -28,6 +28,12 @@ apply: ## Apply the generated infrastructure plan
 	@echo "Applying Terraform configuration..."
 	@cd $(TF_DIR) && TF_VAR_postgresql_admin_password="$(TF_VAR_postgresql_admin_password)" terraform apply tfplan
 
+init_container_registry: ## Initialise the container registry
+	@echo "Generating Terraform plan for the container registry..."
+	@cd $(TF_DIR) && TF_VAR_postgresql_admin_password="$(TF_VAR_postgresql_admin_password)" terraform plan -out=tfplan -target=module.container_app.azurerm_container_registry.this
+	@echo "Applying Terraform configuration for the container registry..."
+	@cd $(TF_DIR) && TF_VAR_postgresql_admin_password="$(TF_VAR_postgresql_admin_password)" terraform apply tfplan
+
 destroy: ## Destroy local environment resources safely
 	@echo "Destroying infrastructure..."
 	@cd $(TF_DIR) && TF_VAR_postgresql_admin_password="$(TF_VAR_postgresql_admin_password)" terraform destroy

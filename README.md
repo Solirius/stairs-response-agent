@@ -112,7 +112,19 @@ openai_model         = "gpt-4o"
 openai_model_version = "2024-11-20"
 ```
 
-### 7. Deploy
+### 7. Initialise the container registry
+Before we can initialise the infrastructure fully, we need to first create a container registry and populate it with a base image
+
+Run these from the **project root** (where the `Makefile` lives):
+
+```bash
+make init                       # initialise backend and providers
+make init_container_registry    # provision infrastructure for the container registry
+```
+
+Once this is done, run `sh deploy_acr.sh` in your copy of the `housing-association-compliance-db` repository, which will build and deploy the app image to the ACR
+
+### 8. Deploy
 
 Run these from the **project root** (where the `Makefile` lives):
 

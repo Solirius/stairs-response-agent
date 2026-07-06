@@ -16,7 +16,7 @@ module "resource_group" {
 
 module "postgresql" {
   source              = "./modules/postgresql"
-  name                = "${local.postgresql_name}-${random_string.unique_id}"
+  name                = "${local.postgresql_name}-${random_string.unique_id.id}"
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
   admin_username      = var.postgresql_admin_username
@@ -27,8 +27,8 @@ module "postgresql" {
 
 module "container_app" {
   source              = "./modules/container-app"
-  name                = "${local.container_app_name}-${random_string.unique_id}"
-  acr_name            = local.acr_name
+  name                = "${local.container_app_name}-${random_string.unique_id.id}"
+  acr_name            = "${local.acr_name}${random_string.unique_id.id}"
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
   app_settings = {
@@ -47,7 +47,7 @@ module "container_app" {
 
 module "ai_search" {
   source              = "./modules/ai-search"
-  name                = "${local.search_name}-${random_string.unique_id}"
+  name                = "${local.search_name}-${random_string.unique_id.id}"
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
   sku                 = var.search_sku
@@ -56,7 +56,7 @@ module "ai_search" {
 
 module "ai_foundry" {
   source                  = "./modules/ai-foundry"
-  name                    = "${local.ai_foundry_name}-${random_string.unique_id}"
+  name                    = "${local.ai_foundry_name}-${random_string.unique_id.id}"
   resource_group_name     = module.resource_group.name
   location                = var.openai_location
   model_name              = var.openai_model
