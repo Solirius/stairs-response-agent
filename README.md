@@ -144,7 +144,7 @@ TF_VAR_postgresql_admin_password="..." terraform plan -out=tfplan
 terraform apply tfplan
 ```
 
-### 8. Known subscription quota constraints
+### 9. Known subscription quota constraints
 
 These issues were encountered on the hackathon subscription and are fixed in the current config:
 
@@ -158,27 +158,18 @@ These issues were encountered on the hackathon subscription and are fixed in the
 | PostgreSQL zone change blocked | Can't modify zone without HA pairing | Restored `zone = "1"` to match deployed state |
 | `Microsoft.App` provider not registered | Container Apps namespace not registered | `az provider register --namespace Microsoft.App` |
 
-### 9. Redeploying the container image
+### 10. Redeploying the container image
 
 After code changes, rebuild and push the image, then trigger a new revision:
 
 ```bash
 # From the housing-association-compliance-db directory
-az acr build \
-  --registry acrcmplianzhack \
-  --image compliance-api:latest \
-  .
-
-# Update the running Container App
-az containerapp update \
-  --name app-cmplianz-hack \
-  --resource-group rg-cmplianz-hack-uksouth \
-  --image acrcmplianzhack.azurecr.io/compliance-api:latest
+sh deploy.sh
 ```
 
 Terraform uses `ignore_changes` on the container image so it won't revert CLI-driven image updates on the next `terraform apply`.
 
-### 10. Destroy (when done)
+### 11. Destroy (when done)
 
 ```bash
 make destroy
