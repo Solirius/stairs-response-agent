@@ -60,11 +60,6 @@ resource "azurerm_container_app" "this" {
           value = env.value
         }
       }
-
-      env {
-        name  = "AZURE_KEYVAULT_URI"
-        value = var.key_vault_uri
-      }
     }
   }
 
@@ -74,6 +69,10 @@ resource "azurerm_container_app" "this" {
     traffic_weight {
       percentage      = 100
       latest_revision = true
+    }
+
+    cors {
+      allowed_origins = ["https://portal.azure.com"]
     }
   }
 

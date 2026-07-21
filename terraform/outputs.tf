@@ -23,27 +23,7 @@ output "foundry_endpoint" {
   value       = module.ai_foundry.endpoint
 }
 
-output "foundry_hub_id" {
-  description = "Resource ID of the Azure AI Foundry Hub."
-  value       = module.ai_foundry.foundry_hub_id
-}
-
-output "foundry_project_id" {
-  description = "Resource ID of the Azure AI Foundry Project."
-  value       = module.ai_foundry.foundry_project_id
-}
-
 output "search_endpoint" {
   description = "Azure AI Search endpoint URL."
   value       = module.ai_search.endpoint
-}
-
-output "key_vault_uri" {
-  description = "URI of the Key Vault storing application secrets."
-  value       = module.key_vault.vault_uri
-}
-
-output "storage_blob_endpoint" {
-  description = "Primary blob endpoint for the documents storage account."
-  value       = module.storage.primary_blob_endpoint
 }

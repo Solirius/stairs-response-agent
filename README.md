@@ -43,6 +43,9 @@ Secrets (`postgresql-password`, `openai-api-key`, `search-api-key`) are stored i
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) installed
 - [Terraform](https://developer.hashicorp.com/terraform/install) >= 1.5.0 installed
 - Access to the target Azure subscription
+- The following Azure Resource providers must be enabled in your Azure subscription
+  - `Microsoft.Storage`
+  - `Microsoft.App`
 
 ### 2. Log in to Azure
 
@@ -110,7 +113,19 @@ openai_model         = "gpt-4o"
 openai_model_version = "2024-11-20"
 ```
 
-### 7. Deploy
+### 7. Initialise the container registry
+Before we can initialise the infrastructure fully, we need to first create a container registry and populate it with a base image
+
+Run these from the **project root** (where the `Makefile` lives):
+
+```bash
+make init                       # initialise backend and providers
+make init_container_registry    # provision infrastructure for the container registry
+```
+
+Once this is done, run `sh deploy_acr.sh` in your copy of the `housing-association-compliance-db` repository, which will build and deploy the app image to the ACR
+
+### 8. Deploy
 
 Run these from the **project root** (where the `Makefile` lives):
 
@@ -129,7 +144,7 @@ TF_VAR_postgresql_admin_password="..." terraform plan -out=tfplan
 terraform apply tfplan
 ```
 
-### 8. Known subscription quota constraints
+### 9. Known subscription quota constraints
 
 These issues were encountered on the hackathon subscription and are fixed in the current config:
 
@@ -143,27 +158,18 @@ These issues were encountered on the hackathon subscription and are fixed in the
 | PostgreSQL zone change blocked | Can't modify zone without HA pairing | Restored `zone = "1"` to match deployed state |
 | `Microsoft.App` provider not registered | Container Apps namespace not registered | `az provider register --namespace Microsoft.App` |
 
-### 9. Redeploying the container image
+### 10. Redeploying the container image
 
 After code changes, rebuild and push the image, then trigger a new revision:
 
 ```bash
 # From the housing-association-compliance-db directory
-az acr build \
-  --registry acrcmplianzhack \
-  --image compliance-api:latest \
-  .
-
-# Update the running Container App
-az containerapp update \
-  --name app-cmplianz-hack \
-  --resource-group rg-cmplianz-hack-uksouth \
-  --image acrcmplianzhack.azurecr.io/compliance-api:latest
+sh deploy.sh
 ```
 
 Terraform uses `ignore_changes` on the container image so it won't revert CLI-driven image updates on the next `terraform apply`.
 
-### 10. Destroy (when done)
+### 11. Destroy (when done)
 
 ```bash
 make destroy
@@ -173,41 +179,7 @@ make destroy
 
 ## To create the remote backend
 
-```bash
-# Log in to Azure
-az login
-
-# Set variables (replace with your naming standard/region)
-RG_NAME="rg-fabric-tfstate-uksouth"
-STORAGE_NAME="stfabrictfstate$(date +%s)" # unique name
-CONTAINER_NAME="tfstate"
-LOCATION="uksouth"
-
-# Create Resource Group for State
-az group create --name $RG_NAME --location $LOCATION
-
-# Create Storage Account with versioning enabled (crucial for recovery during hackdays)
-az storage account create \
-  --name $STORAGE_NAME \
-  --resource-group $RG_NAME \
-  --location $LOCATION \
-  --sku Standard_LRS \
-  --encryption-services blob
-
-# Enable Blob Versioning for safety
-az storage account blob-service-properties update \
-  --account-name $STORAGE_NAME \
-  --resource-group $RG_NAME \
-  --enable-versioning true
-
-# Create Blob Container
-az storage container create \
-  --name $CONTAINER_NAME \
-  --account-name $STORAGE_NAME \
-  --auth-mode login
-
-echo "Save this storage account name for your backend.tf: $STORAGE_NAME"
-```
+Run `sh init_remote_backend.sh` to initialise the backend.
 
 > **Fish shell note:** Replace `VAR="value"` assignments with `set VAR "value"` and run the
 > `az` commands individually using the literal values, as Fish does not support `VAR=value` syntax.

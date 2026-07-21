@@ -12,4 +12,5 @@ crash.*.log
 
 # Sensitive environment variables
 *.tfvars.local
+terraform/tfplan
 .env

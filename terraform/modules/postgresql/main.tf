@@ -1,14 +1,14 @@
 resource "azurerm_postgresql_flexible_server" "this" {
-  name                         = var.name
-  resource_group_name          = var.resource_group_name
-  location                     = var.location
-  administrator_login          = var.admin_username
-  administrator_password       = var.admin_password
-  sku_name                     = var.sku_name
-  version                      = "16"
-  storage_mb                   = 32768
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = false
+  name                          = var.name
+  resource_group_name           = var.resource_group_name
+  location                      = var.location
+  administrator_login           = var.admin_username
+  administrator_password        = var.admin_password
+  sku_name                      = var.sku_name
+  version                       = "16"
+  storage_mb                    = 32768
+  backup_retention_days         = 7
+  geo_redundant_backup_enabled  = false
   zone                          = "1"
   public_network_access_enabled = true
   tags                          = var.tags

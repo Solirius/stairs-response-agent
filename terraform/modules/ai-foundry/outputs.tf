@@ -18,13 +18,3 @@ output "embedding_deployment_name" {
   description = "Name of the embedding model deployment."
   value       = azurerm_cognitive_deployment.embeddings.name
 }
-
-output "foundry_hub_id" {
-  description = "Resource ID of the Azure AI Foundry Hub."
-  value       = azurerm_ai_foundry.hub.id
-}
-
-output "foundry_project_id" {
-  description = "Resource ID of the Azure AI Foundry Project."
-  value       = azurerm_ai_foundry_project.this.id
-}
